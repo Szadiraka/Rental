@@ -20,6 +20,13 @@ public class UserModel {
     private String password;
     private LocalDate dateOfBirth;
 
+    private boolean isLocked;   //блокування користувача
+    private double rating;       //кількість балів
+    private int countOfVoice;   //кількість голосів
+
+
+
+
     public UserModel(String name, String mail,String password,long city_id,long role_id, LocalDate dateOfBirth){
         this.name=name;
         this.city_id=city_id;
@@ -27,6 +34,9 @@ public class UserModel {
         this.password=password;
         this.dateOfBirth=dateOfBirth;
         this.role_id=role_id;
+        this.isLocked=false;
+        this.countOfVoice=0;
+        this.rating=0;
     }
     public UserModel(){
 
@@ -87,5 +97,29 @@ public class UserModel {
 
     public void setRole_id(long role_id) {
         this.role_id = role_id;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getCountOfVoice() {
+        return countOfVoice;
+    }
+
+    public void setCountOfVoice(int countOfVoice) {
+        this.countOfVoice = countOfVoice;
     }
 }
