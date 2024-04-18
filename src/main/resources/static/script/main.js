@@ -17,3 +17,24 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     }
 })
+
+
+let modalAuthorization=document.getElementById("modal");
+let modalRegistration=document.getElementById("modal2");
+let openFormForAuthorization= document.getElementById("authorization");
+let openFormForRegistration=document.getElementById("registration");
+let closeFormForAuthorization=document.getElementById("close");
+let closeFormForRegistration=document.getElementById("close2")
+openFormForAuthorization.onclick=function (){
+    modalAuthorization.style.display="block";
+}
+
+openFormForRegistration.onclick=function (){
+    modalRegistration.style.display="block";
+}
+closeFormForAuthorization.onclick=function(){
+    modalAuthorization.style.display="none";
+}
+closeFormForRegistration.onclick=function(){
+    modalRegistration.style.display="none";
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/header::header"></header>
+    <main class="main">
+        <h1 class="article">Необхідна інформація для зв`язку з нами:</h1>
+
+        <p class="p">
+            Маєте запитання або потребуєте додаткової інформації? Наша команда готова допомогти вам. Є кілька способів, якими ви можете зв'язатися з нами:
+        </p>
+
+        <p class="p">
+            Електронна пошта: Відправте нам листа на адресу <span class="span">RentalMy@gmail.com</span> , і ми надамо вам відповідь найближчим часом.
+        </p>
+
+
+        <p class="p">
+            Телефон: Якщо у вас виникли термінові питання, ви можете зателефонувати нам за номером <span class="span">+8080-500-500-50</span> цілодобово та абсолютно безкоштовно.
+        </p>
+
+
+        <p class="p">
+            Соціальні мережі: Ми також присутні в соціальних мережах. Ви можете знайти нас у <span class="span">facebook, twitter</span> та надіслати нам приватне повідомлення або залишити коментар.
+        </p>
+
+
+
+
+    </main>
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+</body>
+</html>

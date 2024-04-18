@@ -1,6 +1,10 @@
 package org.example.rentalofproperty.Controllers;
 
+import org.example.rentalofproperty.Models.City;
+import org.example.rentalofproperty.Models.Country;
 import org.example.rentalofproperty.Models.UserModel;
+import org.example.rentalofproperty.Repo.ICityRepository;
+import org.example.rentalofproperty.Repo.ICountryRepository;
 import org.example.rentalofproperty.Repo.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,14 +14,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.*;
 
 @Controller
 public class MainController {
  @Autowired
  private IUserRepository userRepository;
-
+ @Autowired
+private ICountryRepository countryRepository;
+ @Autowired
+private ICityRepository cityRepository;
  @GetMapping("/")
   public String home(Model model){
+//   Iterable<Country> countries = countryRepository.findAll();
+//   Iterable<City> cities= cityRepository.findAll();
+  ArrayList<String> countries= new ArrayList<>();
+//  HashMap<String, ArrayList<String> cities= new HashMap<>();
+//  Collections.addAll(countries,"Польща","Чехія","Італія","Україна");
+//  cities.put("Україна","Львів","Київ"]);
+//  cities.put("Україна","Київ");
+//  cities.put("Польща","Варшава");
+//
+  for (String countryName : countries){
+    Country oldCountry= countryRepository.findByName(countryName);
+    if(oldCountry==null) {
+     countryRepository.save(new Country(countryName));
+    }
+  }
+
+
+
   return "home";
  }
 
@@ -63,5 +89,21 @@ public class MainController {
  }
 
 
+ @GetMapping("/about")
+ public String about(Model model){
+  return "about";
+ }
+ @GetMapping("/contacts")
+ public String contact(Model model){
+  return "contacts";
+ }
+
+
+@GetMapping("/offers")
+public String offer(Model model){
+ return "offer";
+}
 
 }
+
+
