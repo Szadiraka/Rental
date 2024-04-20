@@ -1,21 +1,29 @@
 package org.example.rentalofproperty.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class City {
+public class City  implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private long country_id;
+    @ManyToOne
+    @JoinColumn(name="country_id")
+    private Country country;
 
-    public City(String name,long country_id){
+    @OneToMany(mappedBy = "city",cascade = CascadeType.ALL)
+    private List<Advertisement> advertisements;
+
+    @OneToMany(mappedBy = "city",cascade = CascadeType.ALL)
+    private List<UserModel> users;
+
+    public City(String name,Country country){
         this.name=name;
-        this.country_id=country_id;
+        this.country=country;
     }
 
     public City() {
@@ -39,11 +47,28 @@ public class City {
         this.name = name;
     }
 
-    public long getCountry_id() {
-        return country_id;
+
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountry_id(long country_id) {
-        this.country_id = country_id;
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public List<Advertisement> getAdvertisements() {
+        return advertisements;
+    }
+
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
+    }
+
+    public List<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
     }
 }

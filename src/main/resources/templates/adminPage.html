@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>AdminMain</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/headerAdmin::headerAdmin"></header>
+    <main class="main">
+
+        <h1 class="h1 ta-c">Сторінка для роботи Адміністратора Сайту</h1>
+        <h2 class="h2 ta-c">Ім`я: <span class="bl" th:text="${user.name}"></span></h2>
+        <h2 class="h2 ta-c">Login: <span class="bl" th:text="${user.mail}"></span></h2>
+
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+</body>
+</html>
+

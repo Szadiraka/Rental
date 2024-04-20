@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>AdminCities</title>
+</head>
+<body>
+<div class="wrapper">
+   <header th:insert="sections/headerAdmin::headerAdmin"></header>
+    <main class="main">
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <p class="close" id="close">&times;</p>
+                <h2 class="article">Додавання міста</h2>
+                <form action="/admin/cities/add" method="post" >
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="InputName">Назва міста</label>
+                            </td>
+                            <td>
+                                <input type="text" name="name" class="input" id="InputName" placeholder="Введіть назву міста" required min="3">
+                            </td>
+                        <tr>
+                            <td><label for="InputCountry">Оберіть країну</label></td>
+                            <td>
+                                <select name="countryId" id="InputCountry" >
+                                    <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <button type="submit" class="button">Створити</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <h1 class="article mb-20" >Сторінка для роботи з Містами</h1>
+            <p id="text" class="ta-c rd" th:text="${message}"></p>
+            <table>
+                <tr>
+                    <th>Назва Міста</th>
+                    <th>Змінити</th>
+                    <th>Видалити</th>
+                </tr>
+                <tr th:each="city:${cities}">
+                    <form action="/admin/cities/deleteOrEdit" method="post">
+                        <input type="hidden" name="id" th:value="${city.id}">
+                        <td><input class="input" type="text" name="name" th:value="${city.name}"></td>
+                        <td><button class="button" type="submit" name="action" value="edit">Змінити</button></td>
+                        <td><button class="button rd" type="submit" name="action" value="delete">Видалити</button></td>
+                    </form>
+                </tr>
+            </table>
+            <button id="addElement" class="button mt-20">Додати місто</button>
+
+        </div>
+
+
+
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+<script src="/script/admin.js"></script>
+</body>
+</html>

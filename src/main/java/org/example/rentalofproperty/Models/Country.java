@@ -1,9 +1,8 @@
 package org.example.rentalofproperty.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Country {
@@ -11,6 +10,9 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+
+    @OneToMany(mappedBy = "country",cascade = CascadeType.ALL)
+    private List<City> cities;
 
     public Country(String name){
         this.name=name;
@@ -35,5 +37,13 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 }

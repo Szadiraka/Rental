@@ -1,9 +1,6 @@
 package org.example.rentalofproperty.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -12,18 +9,24 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @ManyToOne
+    @JoinColumn(name="advertisement_id")
 
-    private long advertisement_id;    // id повідомлення
-    private long renter_id;     //  id орендаря
+    private Advertisement advertisement;    // id повідомлення
+    @ManyToOne
+    @JoinColumn(name="renter_id")
+    private UserModel renter;     //  id орендаря
     private LocalDate date;    //дата створення
 
-    private long status_id;    //статус ордера (створений, підтверджений, відхилений, виконаний
+    @ManyToOne
+    @JoinColumn(name="status_id",nullable = false)
+    private Status status;    //статус ордера (створений, підтверджений, відхилений, виконаний
 
-    public Order(long advertisement_id, long renter_id, long status_id){
+    public Order(Advertisement advertisement, UserModel renter, Status status){
         this.date=LocalDate.now();
-        this.advertisement_id=advertisement_id;
-        this.renter_id=renter_id;
-        this.status_id=status_id;
+        this.advertisement=advertisement;
+        this.renter=renter;
+        this.status=status;
     }
 
     public Order() {
@@ -38,21 +41,7 @@ public class Order {
         this.id = id;
     }
 
-    public long getAdvertisement_id() {
-        return advertisement_id;
-    }
 
-    public void setAdvertisement_id(long advertisement_id) {
-        this.advertisement_id = advertisement_id;
-    }
-
-    public long getRenter_id() {
-        return renter_id;
-    }
-
-    public void setRenter_id(long renter_id) {
-        this.renter_id = renter_id;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -62,11 +51,28 @@ public class Order {
         this.date = date;
     }
 
-    public long getStatus_id() {
-        return status_id;
+
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatus_id(long status_id) {
-        this.status_id = status_id;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public UserModel getRenter() {
+        return renter;
+    }
+
+    public void setRenter(UserModel renter) {
+        this.renter = renter;
+    }
+
+    public Advertisement getAdvertisement() {
+        return advertisement;
+    }
+
+    public void setAdvertisement(Advertisement advertisement) {
+        this.advertisement = advertisement;
     }
 }

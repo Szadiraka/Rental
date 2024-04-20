@@ -3,6 +3,7 @@ package org.example.rentalofproperty.Models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Advertisement {
@@ -10,9 +11,15 @@ public class Advertisement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private long landLord_id;      //орендодавець
-    private long housingType_id;    // тип житла
-    private long city_id;
+    @ManyToOne
+    @JoinColumn(name="landLOrd_id")
+    private UserModel landLord;      //орендодавець
+    @ManyToOne
+    @JoinColumn(name="housingType_id")
+    private HousingType housingType;    // тип житла
+    @ManyToOne
+    @JoinColumn(name="city_id")
+    private City city;
     private int price;            // ціна оренди
     private int rentalDate;  // строк оренди(днів)
     @Column(length = 1024)
@@ -20,15 +27,21 @@ public class Advertisement {
 
     private LocalDate date;      //дат розміщення оголошення
 
+    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL)
+    private List<Order> orders;
+
+    @OneToMany(mappedBy = "advertisement")
+    private List<Image> images;
+
     //колекція шляхів до сховища з зображеннями
 
-    public Advertisement(long landLord_id, long housingType_id, long city_id, int price, int rentalDate, String description){
-        this.city_id=city_id;
+    public Advertisement(UserModel landLord, HousingType housingType, City city, int price, int rentalDate, String description){
+        this.city=city;
         this.rentalDate=rentalDate;
         this.description=description;
-        this.housingType_id= housingType_id;
+        this.housingType= housingType;
         this.price=price;
-        this.landLord_id=landLord_id;
+        this.landLord=landLord;
         this.date=LocalDate.now();
     }
 
@@ -44,30 +57,6 @@ public class Advertisement {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getLandLord_id() {
-        return landLord_id;
-    }
-
-    public void setLandLord_id(long landLord_id) {
-        this.landLord_id = landLord_id;
-    }
-
-    public long getHousingType_id() {
-        return housingType_id;
-    }
-
-    public void setHousingType_id(long housingType_id) {
-        this.housingType_id = housingType_id;
-    }
-
-    public long getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(long city_id) {
-        this.city_id = city_id;
     }
 
     public int getPrice() {
@@ -100,5 +89,45 @@ public class Advertisement {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public HousingType getHousingType() {
+        return housingType;
+    }
+
+    public void setHousingType(HousingType housingType) {
+        this.housingType = housingType;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public UserModel getLandLord() {
+        return landLord;
+    }
+
+    public void setLandLord(UserModel landLord) {
+        this.landLord = landLord;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

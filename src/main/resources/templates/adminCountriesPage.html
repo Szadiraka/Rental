@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>AdminCountries</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/headerAdmin::headerAdmin"></header>
+    <main class="main">
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <p class="close" id="close">&times;</p>
+                <h2 class="article">Додавання країни</h2>
+                <form method="post" action="/admin/countries/add" >
+                    <input type="text" class="input"  id="name" name="name" aria-describedby="emailHelp" placeholder="Введіть назву країни" required minlength="4">
+                    <button type="submit" class="button">Додати</button>
+                </form>
+
+            </div>
+        </div>
+         <div class="container">
+
+            <h1 class="article mb-20" >Сторінка для роботи з країнами</h1>
+            <p id="text" class="ta-c rd" th:text="${message}"></p>
+             <table>
+                 <tr>
+                    <th>Назва країни</th>
+                     <th>Змінити</th>
+                     <th>Видалити</th>
+                 </tr>
+                 <tr th:each="country:${countries}">
+                     <form action="/admin/countries/deleteOrEdit" method="post">
+                         <input type="hidden" name="id" th:value="${country.id}">
+                         <td><input class="input" type="text" name="name" th:value="${country.name}"></td>
+                         <td><button class="button" type="submit" name="action" value="edit">Змінити</button></td>
+                         <td><button class="button rd" type="submit" name="action" value="delete">Видалити</button></td>
+                     </form>
+                 </tr>
+             </table>
+             <button id="addElement" class="button mt-20">Додати країну</button>
+
+         </div>
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+<script src="/script/main.js"></script>
+</body>
+</html>

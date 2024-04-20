@@ -1,11 +1,9 @@
 package org.example.rentalofproperty.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Role {
@@ -13,6 +11,9 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private List<UserModel> users;
 
     public Role(String name){
         this.name=name;
@@ -37,5 +38,15 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+
+    public List<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
     }
 }

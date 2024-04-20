@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>AdminCities</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/headerAdmin::headerAdmin"></header>
+    <main class="main">
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <p class="close" id="close">&times;</p>
+                <h2 class="article">Авторизація</h2>
+                <form method="post" action="/" >
+                    <input type="email" class="input"  id="mail" name="mail" aria-describedby="emailHelp" placeholder="Введіть email" required>
+                    <input type="password" class="input"  id="password" name="password" placeholder="Введите пароль" required min="4">
+                    <button type="submit" name="authorization" class="button">Ввійти</button>
+                </form>
+
+            </div>
+        </div>
+
+        <h2>Сторінка для роботи З оголошеннями</h2>
+
+
+
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+<script src="/script/main.js"></script>
+</body>
+</html>

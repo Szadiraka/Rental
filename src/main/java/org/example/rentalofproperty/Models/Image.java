@@ -10,9 +10,13 @@ public class Image {
     @Column(length = 1024)
     private String path;
 
+    @ManyToOne
+    @JoinColumn(name="advertisement_id")
+    private Advertisement advertisement;
 
-    public Image(String path){
+    public Image(String path,Advertisement advertisement){
         this.path=path;
+        this.advertisement=advertisement;
     }
 
     public Image() {
@@ -33,5 +37,13 @@ public class Image {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Advertisement getAdvertisement() {
+        return advertisement;
+    }
+
+    public void setAdvertisement(Advertisement advertisement) {
+        this.advertisement = advertisement;
     }
 }

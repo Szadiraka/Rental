@@ -1,9 +1,6 @@
 package org.example.rentalofproperty.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Message {
@@ -11,13 +8,18 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String description;
-    private long fromUser_id;
-    private long toUser_id;
+    @ManyToOne
+    @JoinColumn(name="sender_id")
+    private UserModel sender;
+
+    @ManyToOne
+    @JoinColumn(name="recipient_id")
+    private UserModel recipient;
     private long order_id;
 
-    public Message(String description, long fromUser_id, long toUser_id, long order_id){
-        this.fromUser_id=fromUser_id;
-        this.toUser_id=toUser_id;
+    public Message(String description, UserModel sender, UserModel recipient, long order_id){
+        this.sender=sender;
+        this.recipient=recipient;
         this.order_id=order_id;
         this.description=description;
     }
@@ -42,27 +44,27 @@ public class Message {
         this.description = description;
     }
 
-    public long getFromUser_id() {
-        return fromUser_id;
-    }
-
-    public void setFromUser_id(long fromUser_id) {
-        this.fromUser_id = fromUser_id;
-    }
-
-    public long getToUser_id() {
-        return toUser_id;
-    }
-
-    public void setToUser_id(long toUser_id) {
-        this.toUser_id = toUser_id;
-    }
-
     public long getOrder_id() {
         return order_id;
     }
 
     public void setOrder_id(long order_id) {
         this.order_id = order_id;
+    }
+
+    public UserModel getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(UserModel recipient) {
+        this.recipient = recipient;
+    }
+
+    public UserModel getSender() {
+        return sender;
+    }
+
+    public void setSender(UserModel sender) {
+        this.sender = sender;
     }
 }
