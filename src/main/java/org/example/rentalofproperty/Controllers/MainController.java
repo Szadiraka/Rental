@@ -70,9 +70,9 @@ private ICityRepository cityRepository;
                             @RequestParam(required = false) String authorization, @RequestParam(required = false) LocalDate dateOfBirth,
                             @RequestParam(required = false) Long cityId, @RequestParam(required = false) Long roleId, Model model) {
 
-  model.addAttribute("cities",cities);
-  model.addAttribute("countries",countries);
-  model.addAttribute("roles",roles);
+  model.addAttribute("cities", cities);
+  model.addAttribute("countries", countries);
+  model.addAttribute("roles", roles);
   if (registration != null) {
 
    if (!password.equals(password2)) {
@@ -81,13 +81,13 @@ private ICityRepository cityRepository;
    }
 
    if (userRepository.findByMail(mail) != null) {
-     model.addAttribute("message", "Користувач з вказаною електронною адресою вже зареэстрований");
+    model.addAttribute("message", "Користувач з вказаною електронною адресою вже зареэстрований");
     return "home";
    }
    // 3. реєструємо користувача та відпраляємо його на сторінку для орендодавця або на сторінку орендаря
-   City city= cityRepository.findById(cityId).get();
-   Role role=roleRepository.findById(roleId).get();
-   if(city ==null || role==null){
+   City city = cityRepository.findById(cityId).get();
+   Role role = roleRepository.findById(roleId).get();
+   if (city == null || role == null) {
     model.addAttribute("message", "Зареєструватись не вдалось");
 
     return "home";
@@ -104,25 +104,21 @@ private ICityRepository cityRepository;
   else if (authorization != null) {
    UserModel user = userRepository.findByMailAndPassword(mail, password);
    if (user != null) {
-    attr.addAttribute("id",user.getId());
-    if(user.getRole().getName().equals("адміністратор")){
+    attr.addAttribute("id", user.getId());
+    if (user.getRole().getName().equals("адміністратор")) {
      return "redirect:/admin";
-    }else if(user.getRole().getName().equals("орендар")){
-     return "redirect:/renter";
-    }else{
-     return "redirect:/landlord";
+    } else {
+     return "redirect:/user";
     }
 
    } else {
     model.addAttribute("message", "Користувача з введеним логіном і паролем не існує");
-
-    return "home";
    }
-
   }
-
   return "home";
  }
+
+
 
 
  @GetMapping("/about")

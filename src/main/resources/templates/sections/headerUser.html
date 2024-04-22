@@ -1,0 +1,39 @@
+<div th:fragment="headerUser" class="header">
+    <div class="navigation">
+        <div class="logo">Rental of Property</div>
+        <div class="group-anchor">
+            <ul class="ul">
+                <li>
+                    <a href="/user/about">Про нас</a>
+                </li>
+                <li>
+                    <a href="/user/contacts">Контакти</a>
+                </li>
+                <li>
+                    <a href="/user/offers">Оголошення</a>
+                </li>
+                <li>
+                    <a href="/user">На головну</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="group-button">
+        <a href="/">
+            <button class="button" id="exit">Вийти з аккаунту</button>
+        </a>
+        <select class="button" name="choice" >
+            <option value="" selected>Персональний кабінет</option>
+            <a href="user/personalPage">
+                <option value="1">Персональні дані</option>
+            </a>
+            <a href="user/addOfferPage">
+                <option value="2">Розмістити оголошення</option>
+            </a>
+
+        </select>
+    </div>
+
+
+</div>

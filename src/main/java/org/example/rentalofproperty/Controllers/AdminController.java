@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -68,7 +69,10 @@ public class AdminController {
     @GetMapping("/admin/users")
     public String showUsers(Model model){
         model.addAttribute("users",users);
-        return "adminCountriesPage";
+        model.addAttribute("cities",cities);
+        model.addAttribute("countries",countries);
+        model.addAttribute("roles",roles);
+        return "adminUsersPage";
     }
 
     @GetMapping("/admin/advertisements")
@@ -204,7 +208,134 @@ public class AdminController {
         return "adminCitiesPage";
     }
 
+    @PostMapping("/admin/users/add")
+    public String addUser(@RequestParam String name,@RequestParam Long cityId,@RequestParam Long roleId,@RequestParam String mail,
+                          @RequestParam String password,@RequestParam LocalDate dateOfBirth,Model model){
+        UserModel oldUser= userRepository.findByMail(mail);
+        Role role= roleRepository.findById(roleId).get();
+        if(oldUser !=null){
+            model.addAttribute("message", "Користувач з таким логіном вже існує");
 
+        }
+        else if (role.getName().equals("адміністратор") && !user.getMail().equals("admin@gmail.com")){
+            model.addAttribute("message", "У вас не достатньо прав на створення адміністратора");
 
+        }
+        else{
+            City city= cityRepository.findById(cityId).get();
+            UserModel newUser= new UserModel(name,mail,password,city,role,dateOfBirth);
+            userRepository.save(newUser);
+            users=userRepository.findAll();
+            model.addAttribute("message", "Ви створили нового користувача");
 
+        }
+        model.addAttribute("users", users);
+        model.addAttribute("roles",roles);
+        model.addAttribute("cities",cities);
+        model.addAttribute("countries",countries);
+        return "adminUsersPage";
+    }
+
+    @PostMapping("admin/users/lockedOrEdit")
+    public String blockOrEdit(@RequestParam String action,@RequestParam Long id,@RequestParam Long cityId, @RequestParam Long roleId,@RequestParam String name,
+                              @RequestParam String mail,@RequestParam String password, @RequestParam LocalDate dateOfBirth,Model model){
+         UserModel newUser=userRepository.findById(id).get();
+         if(user.getMail().equals("admin@gmail.com")){
+             if(newUser!=null && action.equals("block")){
+                 if(newUser.getId()!=user.getId()){
+                     newUser.setLocked(true);
+                     userRepository.save(newUser);
+                     users=userRepository.findAll();
+                     model.addAttribute("message", "Вказано користувача заблоковано");
+                 }
+                 else{
+                     model.addAttribute("message", "Ви не можете заблокувати свій аккаунт");
+                 }
+             }
+             else if(newUser!=null && action.equals("unblock")){
+                 newUser.setLocked(false);
+                 userRepository.save(newUser);
+                 users=userRepository.findAll();
+                 model.addAttribute("message", "Вказано користувача розблоковано");
+             }
+             else if(newUser!=null && action.equals("edit")){
+                 UserModel oldUser= userRepository.findByMail(mail);
+                 if(oldUser!= null && oldUser.getId()!=newUser.getId()){
+                     model.addAttribute("message", "Користувач з таким мeйлом вже існує");
+                 }
+                 else {
+                     Role role= roleRepository.findById(roleId).get();
+                     City city= cityRepository.findById(cityId).get();
+                     if(role!=null && city !=null && dateOfBirth!=null && password!=null && mail!=null){
+                         if(newUser.getId()==user.getId()){
+                             Role st= roleRepository.findById(user.getRole().getId()).get();
+                             newUser.setAllParameters(name,city,st,"admin@gmail.com",password,dateOfBirth);
+                         }
+                         else{
+                             newUser.setAllParameters(name,city,role,mail,password,dateOfBirth);
+                         }
+
+                         userRepository.save(newUser);
+                         users=userRepository.findAll();
+                         model.addAttribute("message", "Дані користувача оновлені");
+                     }
+
+                 }
+             }
+         }
+         else{
+             if(newUser!=null && action.equals("block")) {
+               if(!newUser.getRole().getName().equals("адміністратор")){
+                   newUser.setLocked(true);
+                   userRepository.save(newUser);
+                   users=userRepository.findAll();
+                   model.addAttribute("message", "Вказано користувача заблоковано");
+               }
+               else{
+                   model.addAttribute("message", "Ви не маєте прав на блокування адміністраторів");
+               }
+             } else if (newUser!=null && action.equals("block")) {
+                 if(!newUser.getRole().getName().equals("адміністратор")){
+                     newUser.setLocked(false);
+                     userRepository.save(newUser);
+                     users=userRepository.findAll();
+                     model.addAttribute("message", "Вказано користувача розблоковано");
+                 }
+                 else{
+                     model.addAttribute("message", "Ви не маєте прав на розблокування адміністраторів");
+                 }
+             } else if(newUser!=null && action.equals("edit")){
+                 if(!newUser.getRole().getName().equals("адміністратор")){
+                     UserModel oldUser= userRepository.findByMail(mail);
+                     if(oldUser!= null && oldUser.getId()!=newUser.getId()){
+                         model.addAttribute("message", "Користувач з таким мeйлом вже існує");
+                     }
+                     else{
+                             Role role= roleRepository.findById(roleId).get();
+                             City city= cityRepository.findById(cityId).get();
+                             if(role!=null && city !=null && dateOfBirth!=null && password!=null && mail!=null){
+                                 newUser.setAllParameters(name,city,role,mail,password,dateOfBirth);
+                                 userRepository.save(newUser);
+                                 users=userRepository.findAll();
+                                 model.addAttribute("message", "Дані користувача оновлені");
+                             }
+
+                     }
+
+                 }
+                 else{
+                     model.addAttribute("message", "Ви не маєте прав на редагування данних адміністраторів");
+                 }
+             }else{
+                 model.addAttribute("message", "Вказано користувача не знайдено");
+             }
+
+         }
+        model.addAttribute("countries", countries);
+        model.addAttribute("cities",cities);
+        model.addAttribute("roles",roles);
+        model.addAttribute("users",users);
+        return "adminUsersPage";
+
+    }
 }

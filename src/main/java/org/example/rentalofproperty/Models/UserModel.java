@@ -169,4 +169,13 @@ public class UserModel {
     public void setAdvertisements(List<Advertisement> advertisements) {
         this.advertisements = advertisements;
     }
+
+    public void setAllParameters(String name, City city, Role role, String mail,String password, LocalDate dateOfBirth){
+        this.name=name;
+        this.city=city;
+        this.role=role;
+        this.mail=mail;
+        this.password=password;
+        this.dateOfBirth=dateOfBirth;
+    }
 }

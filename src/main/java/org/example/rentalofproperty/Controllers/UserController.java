@@ -1,6 +1,5 @@
 package org.example.rentalofproperty.Controllers;
 
-
 import org.example.rentalofproperty.Models.City;
 import org.example.rentalofproperty.Models.Country;
 import org.example.rentalofproperty.Models.Role;
@@ -16,29 +15,46 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class RenterController {
+public class UserController {
     @Autowired
     private IUserRepository userRepository;
-    @Autowired
-    private IHousingRepository housingRepository;
-    @Autowired
-    private IRoleRepository roleRepository;
-    @Autowired
-    private IStatusRepository statusRepository;
 
-    private Iterable<Role> roles;
-    private Iterable<City> cities2;
-    private Iterable<Country> countries2;
     private UserModel user;
 
-    @GetMapping("/renter")
-    public String admin(@RequestParam Long id, Model model){
-        roles=roleRepository.findAll();
-        user=userRepository.findById(id).get();
+    @GetMapping("/user")
+    public String admin(@RequestParam(required = false) Long id, Model model){
+        if(user==null)
+            user=userRepository.findById(id).get();
         model.addAttribute("user",user);
-        return "renterPage";
+        return "userPage";
     }
 
+    @GetMapping("user/about")
+    public String about(Model model){
+        return "userAboutPage";
+    }
+
+    @GetMapping("user/contacts")
+    public String contacts(Model model){
+        return "userContactsPage";
+    }
+
+    @GetMapping("user/offers")
+    public String offer(Model model){
+        return "userOffersPage";
+    }
+
+    @GetMapping("user/personalPage")
+    public String personalInfo(Model model){
+        model.addAttribute("user",user);
+        return "userPersonalPage";
+    }
+
+    @GetMapping("user/addOffer")
+    public String addOffer(Model model){
+        model.addAttribute("user",user);
+        return "userNewOfferPage";
+    }
 
 
 

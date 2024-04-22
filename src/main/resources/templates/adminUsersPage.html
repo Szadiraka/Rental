@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>AdminUsers</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/headerAdmin::headerAdmin"></header>
+    <main class="main">
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <p class="close" id="close">&times;</p>
+                <h2 class="article">Реєстрація нового користувача</h2>
+                <form action="/admin/users/add" method="post" >
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="InputName">П.І.Б.</label>
+                            </td>
+                            <td>
+                                <input type="text" name="name" class="input" id="InputName" placeholder="Введіть ваше і`мя та прізвище" required min="4">
+                            </td>
+                        <tr>
+                            <td>
+                                <label for="DateOfBirth">Дата народження</label>
+                            </td>
+                            <td>
+                                <input type="date" name="dateOfBirth" class="input" id="DateOfBirth" placeholder="Введіть дату народження" required >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputEmail2">Email адрес</label>
+                            </td>
+                            <td>
+                                <input type="email" name="mail" class="input" id="InputEmail2" aria-describedby="emailHelp" placeholder="Введіть email" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputPassword2">Пароль</label>
+                            </td>
+                            <td>
+                                <input type="password" name="password" class="input" id="InputPassword2" placeholder="Введіть пароль" required minlength="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputPassword2">Повторіть пароль</label>
+                            </td>
+                            <td>
+                                <input type="password" name="password2" class="input" id="InputPassword3" placeholder="Введіть пароль" required minlength="4">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="InputCountry">Оберіть країну</label></td>
+                            <td>
+                                <select name="countryId" id="InputCountry" >
+                                    <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="InputCity">Оберіть місто</label></td>
+                            <td>
+                                <select name="cityId" id="InputCity" required>
+                                    <option th:each="city: ${cities}" th:value="${city.getId()}" th:text="${city.getName()}" th:attr="country-id=${city.getCountry().getId()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="InputRole">Оберіть роль</label></td>
+                            <td>
+                                <select name="roleId" id="InputRole" required>
+                                    <option th:each="role: ${roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <button type="submit" name="registration" class="button">Зареєструватись</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1 class="article mb-20" >Сторінка для роботи з Користувачами</h1>
+            <button id="addElement" class="button mt-20">Додати користувача</button>
+            <p id="text" class="ta-c frd" th:text="${message}"></p>
+            <div class="table-container">
+                <div class="container-items" th:each="user: ${users}" th:id="'user_'+${user.id}">
+                    <form action="/admin/users/lockedOrEdit" method="post">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <label >ID:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="id"  th:value="${user.id}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>П.І.Б.:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="name"  th:value="${user.name}" minlength="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Електрона адреса:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="email" name="mail"  th:value="${user.mail}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Пароль:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="password"  th:value="${user.password}" minlength="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Роль:</label>
+                                </td>
+                                <td>
+                                    <select class="input" name="roleId"  required>
+                                        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${role.id eq user.role.id}" ></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Країна:</label>
+                                </td>
+                                <td>
+                                        <select class="input" name="countryId"  required>
+                                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${country.id eq user.city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Місто:</label>
+                                </td>
+                                <td>
+                                       <select class="input" name="cityId"  required>
+                                        <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}" th:selected="${city.id eq user.city.id}" th:attr="country-id=${city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Дата народження:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="date" name="dateOfBirth"  th:value="${user.getDateOfBirth()}" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Блокований акаунт чи ні:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text"  th:value="${user.isLocked()? 'Заблокований':'Не заблокований'}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Кількість голосів:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="number" th:value="${user.countOfVoice}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Рейтинг користувача:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="number" th:value="${user.rating}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="button-container">
+                                        <button class="button" type="submit" name="action" value="edit">Змінити</button>
+                                        <button class="button rd" type="submit" name="action" value="block" th:disabled="${user.isLocked()}">Блокувати</button>
+                                        <button class="button grn" type="submit" name="action" value="unblock" th:disabled="${!user.isLocked()}">Разблокувати</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+
+<script src="/script/admin.js"></script>
+</body>
+</html>
