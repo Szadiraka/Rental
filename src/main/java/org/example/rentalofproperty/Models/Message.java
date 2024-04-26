@@ -17,11 +17,16 @@ public class Message {
     private UserModel recipient;
     private long order_id;
 
-    public Message(String description, UserModel sender, UserModel recipient, long order_id){
+    @ManyToOne
+    @JoinColumn(name="messageType_id")
+    private MessageType messageType;    // тип житла
+
+    public Message(String description, UserModel sender, UserModel recipient, long order_id, MessageType messageType){
         this.sender=sender;
         this.recipient=recipient;
         this.order_id=order_id;
         this.description=description;
+        this.messageType=messageType;
     }
 
     public Message() {
@@ -66,5 +71,13 @@ public class Message {
 
     public void setSender(UserModel sender) {
         this.sender = sender;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
     }
 }

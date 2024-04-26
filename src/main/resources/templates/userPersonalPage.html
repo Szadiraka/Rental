@@ -10,15 +10,118 @@
 <div class="wrapper">
     <header th:insert="sections/headerUser::headerUser"></header>
     <main class="main">
+        <div class="container">
+            <h1 class="article mb-20" >На цій сторінці Ви можете змінити свої персональні дані</h1>
+            <p id="text" class="ta-c frd" th:text="${message}"></p>
+            <div class="table-container">
+                <div class="container-items" >
+                    <form action="/user/personal" method="post">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <label >ID:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="id"  th:value="${user.id}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>П.І.Б.:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="name"  th:value="${user.name}" minlength="5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Електрона адреса:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="email" name="mail"  th:value="${user.mail}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Пароль:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" name="password"  th:value="${user.password}" minlength="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Роль:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="text"  th:value="${user.role.name}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Країна:</label>
+                                </td>
+                                <td>
+                                    <select class="input" id="country" required>
+                                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${country.id eq user.city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Місто:</label>
+                                </td>
+                                <td>
+                                    <select class="input" name="cityId" id="city" required>
+                                        <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}" th:selected="${city.id eq user.city.id}" th:attr="country-id=${city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Дата народження:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="date" name="dateOfBirth"  th:value="${user.getDateOfBirth()}" required>
+                                </td>
+                            </tr>
 
-        <h1 class="h1 ta-c">Сторінка з персональними данними которые будет редактировать</h1>
-        <h2 class="h2 ta-c">Ім`я: <span class="bl" th:text="${user.name}"></span></h2>
-        <h2 class="h2 ta-c">Login: <span class="bl" th:text="${user.mail}"></span></h2>
-        <h2 class="h2 ta-c">Роль: <span class="bl" th:text="${user.role.name}"></span></h2>
+                            <tr>
+                                <td>
+                                    <label>Кількість голосів:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="number" th:value="${user.countOfVoice}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Рейтинг користувача:</label>
+                                </td>
+                                <td>
+                                    <input class="input" type="number" th:value="${user.rating}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="button-container center">
+                                        <button class="button" type="submit" name="action" value="edit">Змінити ваші персональні дані</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
 
     </main>
 
     <footer th:insert="sections/footer::footer"></footer>
 </div>
+<script src="/script/user.js"></script>
 </body>
 </html>

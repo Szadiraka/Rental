@@ -100,7 +100,7 @@
                                     <label >ID:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="text" name="id"  th:value="${user.id}" readonly>
+                                    <input  type="text" name="id"  th:value="${user.id}" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -108,7 +108,7 @@
                                     <label>П.І.Б.:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="text" name="name"  th:value="${user.name}" minlength="5">
+                                    <input type="text" name="name"  th:value="${user.name}" minlength="5">
                                 </td>
                             </tr>
                             <tr>
@@ -116,7 +116,7 @@
                                     <label >Електрона адреса:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="email" name="mail"  th:value="${user.mail}">
+                                    <input  type="email" name="mail"  th:value="${user.mail}">
                                 </td>
                             </tr>
                             <tr>
@@ -124,7 +124,7 @@
                                     <label>Пароль:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="text" name="password"  th:value="${user.password}" minlength="4">
+                                    <input  type="text" name="password"  th:value="${user.password}" minlength="4">
                                 </td>
                             </tr>
                             <tr>
@@ -132,7 +132,7 @@
                                     <label >Роль:</label>
                                 </td>
                                 <td>
-                                    <select class="input" name="roleId"  required>
+                                    <select name="roleId"  required>
                                         <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${role.id eq user.role.id}" ></option>
                                     </select>
                                 </td>
@@ -142,7 +142,7 @@
                                     <label >Країна:</label>
                                 </td>
                                 <td>
-                                        <select class="input" name="countryId"  required>
+                                        <select name="countryId"  required>
                                         <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${country.id eq user.city.country.id}"></option>
                                     </select>
                                 </td>
@@ -152,7 +152,7 @@
                                     <label>Місто:</label>
                                 </td>
                                 <td>
-                                       <select class="input" name="cityId"  required>
+                                       <select  name="cityId"  required>
                                         <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}" th:selected="${city.id eq user.city.id}" th:attr="country-id=${city.country.id}"></option>
                                     </select>
                                 </td>
@@ -162,7 +162,7 @@
                                     <label>Дата народження:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="date" name="dateOfBirth"  th:value="${user.getDateOfBirth()}" required>
+                                    <input type="date" name="dateOfBirth"  th:value="${user.getDateOfBirth()}" required>
                                 </td>
                             </tr>
                             <tr>
@@ -170,7 +170,7 @@
                                     <label>Блокований акаунт чи ні:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="text"  th:value="${user.isLocked()? 'Заблокований':'Не заблокований'}" readonly>
+                                    <input type="text"  th:value="${user.isLocked()? 'Заблокований':'Не заблокований'}" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -178,7 +178,7 @@
                                     <label>Кількість голосів:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="number" th:value="${user.countOfVoice}" readonly>
+                                    <input type="number" th:value="${user.countOfVoice}" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -186,7 +186,7 @@
                                     <label>Рейтинг користувача:</label>
                                 </td>
                                 <td>
-                                    <input class="input" type="number" th:value="${user.rating}" readonly>
+                                    <input  type="number" th:value="${user.rating}" readonly>
                                 </td>
                             </tr>
                             <tr>

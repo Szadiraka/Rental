@@ -20,19 +20,21 @@
         </div>
     </div>
     <div class="group-button">
-        <a href="/">
-            <button class="button" id="exit">Вийти з аккаунту</button>
-        </a>
-        <select class="button" name="choice" >
-            <option value="" selected>Персональний кабінет</option>
-            <a href="user/personalPage">
-                <option value="1">Персональні дані</option>
-            </a>
-            <a href="user/addOfferPage">
-                <option value="2">Розмістити оголошення</option>
-            </a>
 
-        </select>
+        <a href="/user/personal">
+            <button class="button">Персональні дані</button>
+        </a>
+        <th:block th:if="${user.role.name}=='орендодавець'">
+            <a href="/user/myOffers">
+                <button class="button" id="offers">Мої оголошення</button>
+            </a>
+        </th:block>
+
+
+        <a href="/">
+            <button class="button " id="exit">Вийти з аккаунту</button>
+        </a>
+
     </div>
 
 

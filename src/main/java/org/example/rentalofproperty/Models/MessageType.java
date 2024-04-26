@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Status {
+public class MessageType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
 
-    @OneToMany(mappedBy = "status",cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
+    @OneToMany(mappedBy = "messageType", cascade = CascadeType.ALL)
+    private List<Message> messages;
 
-    public Status(String name){
-        this.name=name;
+    public MessageType(String name) {
+        this.name = name;
     }
 
-
-    public Status() {
+    public MessageType() {
 
     }
+
 
     public long getId() {
         return id;
@@ -39,11 +39,11 @@ public class Status {
         this.name = name;
     }
 
-    public List<OrderModel> getOrders() {
-        return orders;
+    public List<Message> getMessages() {
+        return messages;
     }
 
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

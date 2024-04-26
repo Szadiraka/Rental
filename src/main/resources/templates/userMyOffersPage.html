@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modalstyle.css">
+    <title>NewOffer</title>
+</head>
+<body>
+<div class="wrapper">
+    <header th:insert="sections/headerUser::headerUser"></header>
+    <main class="main">
+
+
+        <div class="modal" id="modal" >
+            <div class="modal-content">
+                <p class="close" id="close">&times;</p>
+                <h2 class="article">Створення нового оголошення</h2>
+                <form action="/user/myOffers/add" method="post" enctype="multipart/form-data">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="InputHousingType">Тип житла</label>
+                            </td>
+                            <td>
+                                <select name="housingTypeId" id="InputHousingType" >
+                                    <option th:each="housingType: ${housingTypes}" th:value="${housingType.getId()}" th:text="${housingType.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="InputCountry">Оберіть країну</label></td>
+                            <td>
+                                <select name="countryId" id="InputCountry" >
+                                    <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputCity">Оберіть місто</label>
+                            </td>
+                            <td>
+                                <select name="cityId" id="InputCity" required>
+                                    <option th:each="city: ${cities}" th:value="${city.getId()}" th:text="${city.getName()}" th:attr="country-id=${city.getCountry().getId()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label for="InputDescription">Опис житла</label>
+                            </td>
+                            <td>
+                                <textarea  name="description" id="InputDescription" placeholder="Опис житла"  rows="5" minlength="10" maxlength="1024"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="InputPrice">Вкажіть вартість житла</label></td>
+                            <td>
+                                <input class="input" name="price" type="number" id="InputPrice" min="100" max="10000" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputRentalDates">Кількість днів</label>
+                            </td>
+                            <td>
+                                <input class="input" name="rentalDate" type="number" id="InputRentalDates" min="1" max="31" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputPhoto1">Фотографія 1:</label>
+                            </td>
+                            <td>
+                                <input type="file" id="InputPhoto1" name="photo1" accept=".jpg, .jpeg, .png">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputPhoto1">Фотографія 2:</label>
+                            </td>
+                            <td>
+                                <input type="file" id="InputPhoto2" name="photo2" accept=".jpg, .jpeg, .png">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="InputPhoto1">Фотографія 3:</label>
+                            </td>
+                            <td>
+                                <input type="file" id="InputPhoto3" name="photo3" accept=".jpg, .jpeg, .png">
+                            </td>
+                        </tr>
+
+                    </table>
+                    <button type="submit" name="registration" class="button">Створити повідомлення</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1 class="article mb-20" >Сторінка для роботи з Оголошеннями</h1>
+            <button id="addElement" class="button mt-20">Додати оголошення</button>
+            <p id="text" class="ta-c frd" th:text="${message}"></p>
+            <div class="table-container">
+                <div class="container-items" th:each="advertisement: ${advertisements}" th:id="'advertisement_'+${advertisement.id}">
+                    <form action="/user/myOffers/deleteOrEdit" method="post">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <label >ID:</label>
+                                </td>
+                                <td>
+                                    <input  type="text" name="id"  th:value="${advertisement.id}" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Тип житла:</label>
+                                </td>
+                                <td>
+                                    <select  name="housingTypeId" required>
+                                        <option th:each="housingType: ${housingTypes}" th:value="${housingType.id}" th:text="${housingType.name}" th:selected="${housingType.id eq advertisement.housingType.id}" ></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Країна:</label>
+                                </td>
+                                <td>
+                                    <select name="countryId"  required>
+                                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${country.id eq advertisement.city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Місто:</label>
+                                </td>
+                                <td>
+                                    <select  name="cityId"  required>
+                                        <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}" th:selected="${city.id eq advertisement.city.id}" th:attr="country-id=${city.country.id}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Опис оголошення:</label>
+                                </td>
+                                <td>
+                                    <textarea  name="description"  th:text="${advertisement.description}"  rows="5" minlength="10" maxlength="1024"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Вартість оренди:</label>
+                                </td>
+                                <td>
+                                    <input  type="number" name="price"  th:value="${advertisement.price}" min="100" max="10000">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Термін  оренди:</label>
+                                </td>
+                                <td>
+                                    <input  type="number" name="rentalDate"  th:value="${advertisement.rentalDate}" min="1" max="31">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label >Дата створення:</label>
+                                </td>
+                                <td>
+                                    <input  type="date" name="date"  th:value="${advertisement.date}" readonly>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label>Чи пройло модерацію, чи ні:</label>
+                                </td>
+                                <td>
+                                    <input  type="text"  th:value="${advertisement.isModerated()? 'Пройшло':'Не пройшло'}" readonly>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td colspan="2">
+                                    <div class="button-container">
+                                        <button class="button" type="submit" name="action" value="edit">Змінити оголошення</button>
+                                        <button class="button rd" type="submit" name="action" value="delete" >Видалити оголошення</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+    </main>
+
+    <footer th:insert="sections/footer::footer"></footer>
+</div>
+<script src="/script/admin.js"></script>
+</body>
+</html>

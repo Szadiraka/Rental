@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 
@@ -36,50 +34,121 @@ public class AdminController {
     private Iterable<City> cities;
     private Iterable<Country> countries;
     private Iterable<Advertisement> advertisements;
-    private Iterable<Order> orders;
+    private Iterable<OrderModel> orders;
     private Iterable<UserModel> users;
+    private Iterable<HousingType> housingTypes;
     private UserModel user;
 
     @GetMapping("/admin")
-    public String admin(@RequestParam Long id,Model model){
-        roles=roleRepository.findAll();
-        cities=cityRepository.findAll();
-        countries=countryRepository.findAll();
-        user=userRepository.findById(id).get();
-        users=userRepository.findAll();
-        advertisements=advertisementRepository.findAll();
-        model.addAttribute("user",user);
+    public String admin(@RequestParam Long id, Model model) {
+        if (roles == null)
+            roles = roleRepository.findAll();
+        if (cities == null)
+            cities = cityRepository.findAll();
+        if (countries == null)
+            countries = countryRepository.findAll();
+        if (user == null)
+            user = userRepository.findById(id).get();
+        if (users == null)
+            users = userRepository.findAll();
+        if (advertisements == null)
+            advertisements = advertisementRepository.findByIsModeratedFalseAndIsDeletedFalse();
+        model.addAttribute("user", user);
         return "adminPage";
     }
 
     @GetMapping("/admin/cities")
-    public String showCities(Model model){
-        model.addAttribute("cities",cities);
-        model.addAttribute("countries",countries);
+    public String showCities(Model model) {
+        model.addAttribute("cities", cities);
+        model.addAttribute("countries", countries);
         return "adminCitiesPage";
     }
 
 
     @GetMapping("/admin/countries")
-    public String showCountries(Model model){
-        model.addAttribute("countries",countries);
+    public String showCountries(Model model) {
+        model.addAttribute("countries", countries);
         return "adminCountriesPage";
     }
 
     @GetMapping("/admin/users")
-    public String showUsers(Model model){
-        model.addAttribute("users",users);
-        model.addAttribute("cities",cities);
-        model.addAttribute("countries",countries);
-        model.addAttribute("roles",roles);
+    public String showUsers(Model model) {
+        model.addAttribute("users", users);
+        model.addAttribute("cities", cities);
+        model.addAttribute("countries", countries);
+        model.addAttribute("roles", roles);
         return "adminUsersPage";
     }
 
     @GetMapping("/admin/advertisements")
-    public String showAdvertisements(Model model){
-        model.addAttribute("advertisements",advertisements);
+    public String showAdvertisements(Model model) {
+        if (advertisements == null)
+            advertisements = advertisementRepository.findByIsModeratedFalseAndIsDeletedFalse();
+        if (housingTypes == null)
+            housingTypes = housingRepository.findAll();
+        if (cities == null)
+            cities = cityRepository.findAll();
+        if (countries == null)
+            countries = countryRepository.findAll();
+
+        model.addAttribute("advertisements", advertisements);
+        model.addAttribute("housingTypes", housingTypes);
+        model.addAttribute("cities", cities);
+        model.addAttribute("countries", countries);
         return "adminAdvertisementsPage";
     }
+
+    @PostMapping("/admin/advertisements/deleteOrEdit")
+    public String deleteOrEditAdvertisement(@RequestParam String action, @RequestParam Long id, @RequestParam Long cityId, @RequestParam Long housingTypeId, @RequestParam String description,
+                                            @RequestParam Integer price, @RequestParam Integer rentalDate, Model model) {
+
+        if (action.equals("delete")) {
+            Advertisement adv = advertisementRepository.findById(id).get();
+            if (adv == null) {
+                model.addAttribute("message", "Оголошення не знайдене");
+            } else {
+                adv.setModerated(true);
+                adv.setDeleted(true);
+                advertisementRepository.save(adv);
+                advertisements = advertisementRepository.findByIsModeratedFalseAndIsDeletedFalse();
+                model.addAttribute("message", "Оголошення видалене");
+            }
+
+        } else if (action.equals("edit")) {
+            Advertisement adv = advertisementRepository.findById(id).get();
+            if (adv == null) {
+                model.addAttribute("message", "Оголошення не знайдене");
+            } else {
+                City city = cityRepository.findById(cityId).get();
+                HousingType type = housingRepository.findById(housingTypeId).get();
+                adv.setSomeFields(type, city, price, rentalDate, description);
+                adv.setModerated(true);
+                advertisementRepository.save(adv);
+                advertisements = advertisementRepository.findByIsModeratedFalseAndIsDeletedFalse();
+                model.addAttribute("message", "Оголошення оновлено та підтверджено");
+            }
+        } else if (action.equals("save")) {
+            Advertisement adv = advertisementRepository.findById(id).get();
+            if (adv == null) {
+                model.addAttribute("message", "Оголошення не знайдене");
+            } else {
+                adv.setModerated(true);
+                advertisementRepository.save(adv);
+                advertisements = advertisementRepository.findByIsModeratedFalseAndIsDeletedFalse();
+                model.addAttribute("message", "Оголошення підтверджено");
+            }
+        } else {
+            model.addAttribute("message", "Жодних дій не виконано");
+        }
+
+        model.addAttribute("advertisements", advertisements);
+        model.addAttribute("housingTypes", housingTypes);
+        model.addAttribute("cities", cities);
+        model.addAttribute("countries", countries);
+        return "adminAdvertisementsPage";
+    }
+
+
 
     @PostMapping("/admin/countries/add")
     public String addCountry(@RequestParam String name, Model model){

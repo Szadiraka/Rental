@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Order {
+public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -16,20 +16,20 @@ public class Order {
     @ManyToOne
     @JoinColumn(name="renter_id")
     private UserModel renter;     //  id орендаря
-    private LocalDate date;    //дата створення
+    private LocalDate date;    //дата створення,схвалення
 
     @ManyToOne
     @JoinColumn(name="status_id",nullable = false)
     private Status status;    //статус ордера (створений, підтверджений, відхилений, виконаний
 
-    public Order(Advertisement advertisement, UserModel renter, Status status){
+    public OrderModel(Advertisement advertisement, UserModel renter, Status status){
         this.date=LocalDate.now();
         this.advertisement=advertisement;
         this.renter=renter;
         this.status=status;
     }
 
-    public Order() {
+    public OrderModel() {
 
     }
 

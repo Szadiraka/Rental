@@ -10,16 +10,150 @@
 <div class="wrapper">
     <header th:insert="sections/headerUser::headerUser"></header>
     <main class="main">
+        <p  id="flag" hidden="hidden" th:text="${flag}"></p>
+        <p  id="flag2" hidden="hidden" th:text="${flag2}"></p>
+        <p  id="flag3" hidden="hidden" th:text="${flag3}"></p>
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <h2 class="article mb-20">Визначення рейтинга</h2>
+                <form method="post" action="/user" >
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <label for="message">Повідомлення: </label>
+                            </td>
+                            <td>
+                                <textarea th:text="${description}"   id="message" cols="50"  rows="10" readonly></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="rating">Оберіть рейтинг: </label>
+                            </td>
+                            <td>
+                                <input type="number" hidden="hidden" name="orderId" th:value="${orderId}">
+                                <input type="number" hidden="hidden" name="messageId" th:value="${messageId}">
+                                <input type="number"   id="rating" name="rating" min="1" max="5" value="5">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="button-container center">
+                                <button type="submit" class="button center">Відправити</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
 
-        <h1 class="h1 ta-c">Сторінка для роботи Користувача</h1>
-        <h2 class="h2 ta-c">Ім`я: <span class="bl" th:text="${user.name}"></span></h2>
-        <h2 class="h2 ta-c">Login: <span class="bl" th:text="${user.mail}"></span></h2>
-        <h2 class="h2 ta-c">Роль: <span class="bl" th:text="${user.role.name}"></span></h2>
 
+                </form>
+
+            </div>
+        </div>
+<!--        --------------------------------------------------------------------------->
+        <div class="modal" id="modal2">
+            <div class="modal-content">
+
+                <form method="post" action="/user" >
+                    <button type="submit">
+                        <p class="close">&times;</p>
+                    </button>
+                    <h2 class="article mb-20">Інформаційне повідомлення</h2>
+                    <table class="table">
+                        <tr>
+                            <td>
+<!--                                <input type="number" hidden="hidden" name="orderId" th:value="${orderId}">-->
+<!--                                <input type="number" hidden="hidden" name="messageId" th:value="${messageId}">-->
+                                <textarea th:text="${description2}"   id="message2" cols="50"  rows="10" readonly></textarea>
+                            </td>
+                        </tr>
+                    </table>
+
+                </form>
+
+            </div>
+        </div>
+<!--        ------------------------------------------------------------------------->
+        <div class="modal" id="modal3">
+            <div class="modal-content">
+               <h2 class="article mb-20">Відхилити або підтвердити оренду житла</h2>
+                <form method="post" action="/user" >
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <label for="message3">Повідомлення: </label>
+                            </td>
+                            <td>
+                                <textarea th:text="${description3}"   id="message3" cols="50"  rows="10" readonly></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="number" hidden="hidden" name="orderId" th:value="${order3Id}">
+                                <input type="number" hidden="hidden" name="messageId" th:value="${message3Id}">
+                                <div class="button-container center">
+                                    <button type="submit" class="button mr-40  fgrn" name="action" value="confirm">Підтвердити</button>
+                                    <button type="submit" class="button mr-40 frd " name="action" value="reject">Відхилити</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+        </div>
+<!--        --------------------------------------------------------------------------->
+
+
+        <h2 class="h1 ta-c">Сторінка Користувача</h2>
+        <div class="table-container">
+            <table class="table">
+                <tr>
+                    <td>
+                        <label>Ім`я:</label>
+                    </td>
+                    <td>
+                        <span class="bl" th:text="${user.name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Login:</label>
+                    </td>
+                    <td>
+                        <span class="bl" th:text="${user.mail}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Роль:</label>
+                    </td>
+                    <td>
+                        <span class="bl" th:text="${user.role.name}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Рейтинг:</label>
+                    </td>
+                    <td>
+                        <span class="bl" th:text="${user.rating}"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Кількість голосів:</label>
+                    </td>
+                    <td>
+                        <span class="bl" th:text="${user.countOfVoice}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </main>
-
     <footer th:insert="sections/footer::footer"></footer>
 </div>
+<script src="/script/message.js"></script>
 </body>
 </html>
 

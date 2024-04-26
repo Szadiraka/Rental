@@ -22,7 +22,7 @@ public class UserModel {
     private LocalDate dateOfBirth;
 
     @OneToMany(mappedBy = "renter",cascade = CascadeType.ALL)
-    private List<Order> orders;
+    private List<OrderModel> orders;
 
     @OneToMany(mappedBy = "sender")
     private List<Message> sentMessages;
@@ -34,6 +34,7 @@ public class UserModel {
 
 
     private boolean isLocked;   //блокування користувача
+
     private double rating;       //кількість балів
     private int countOfVoice;   //кількість голосів
 
@@ -130,11 +131,11 @@ public class UserModel {
         this.role = role;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderModel> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderModel> orders) {
         this.orders = orders;
     }
 
@@ -178,4 +179,13 @@ public class UserModel {
         this.password=password;
         this.dateOfBirth=dateOfBirth;
     }
+
+    public void addVoice(double voice){
+        rating= Math.round((countOfVoice*rating+voice)/(++countOfVoice)*10/10.0);
+        if(rating<2)
+            isLocked=true;
+        else
+            isLocked=false;
+    }
+
 }

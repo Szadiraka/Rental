@@ -114,8 +114,8 @@ a{
 }
 
 
-input,select{
-    width: 200px;
+input,select,textarea{
+    width: 300px;
     padding: 6px 10px;
     margin: 5px;
     border: 1px solid lightgray;
@@ -154,6 +154,9 @@ th, td {
 .grn{
     background-color: green;
 }
+.fgrn{
+    color: green;
+}
 .ta-c{
     text-align: center;
 }
@@ -162,6 +165,9 @@ th, td {
     padding: 5px;
     /*margin: 5px;*/
     border: 1px solid lightgray;
+}
+.filter{
+    width: auto;
 }
 
 .container {
@@ -180,9 +186,16 @@ th, td {
     margin-top: 20px;
 }
 
+.mr-40{
+    margin-right: 40px;
+}
+
 .button-container {
    display: flex;
   justify-content: space-between;
+}
+.center{
+    justify-content: center;
 }
 .table{
     box-shadow: 0 0 10px gray;

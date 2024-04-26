@@ -4,19 +4,174 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/modalstyle.css">
-    <title>Offerі</title>
+    <title>Offers</title>
 </head>
 <body>
 <div class="wrapper">
     <header th:insert="sections/headerUser::headerUser"></header>
     <main class="main">
+        <div class="container">
+            <div class="table-container">
+                <form action="/user/offers/filter" method="post">
+                    <h2 class="h2 ta-c fgrn">Фільтр пошуку:</h2>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <input class="filter " type="checkbox" name="countryCheckbox">
+                                <label class="bl">Країна</label>
+                                <select class="filter" name="countryId" id="InputCountry" required>
+                                    <option th:each="country: ${countries}" th:value="${country.getId()}" th:text="${country.getName()}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="filter" type="checkbox" name="rentalDatesCheckbox">
+                                <label class="bl">Термін оренди</label>
+                                <input class="filter" name="rentalDate" type="number" value="1" required min="1" max="31">
+                            </td>
+                            <td>
+                                <input class="filter" type="checkbox" name="ratingCheckbox">
+                                <label class="bl">Рейтинг</label>
+                                <input class="filter" name="rating" type="number" value="5" required min="1" max="5">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="filter" type="checkbox" name="cityCheckbox">
+                                <label class="bl">Місто</label>
+                                <select class="filter" name="cityId" id="InputCity" required>
+                                    <option th:each="city: ${cities}" th:value="${city.getId()}" th:text="${city.getName()}" th:attr="country-id=${city.getCountry().getId()}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="filter" type="checkbox" name="priceCheckbox">
+                                <label class="bl">Вартість оренди</label>
+                                <input class="filter" name="price" type="number" value="100" required min="100" max="10000">
+                            </td>
+                            <td>
+                                <input class="filter" type="checkbox" name="housingTypeCheckbox">
+                                <label class="bl">Тип житла</label>
+                                <select class="filter" name="housingTypeId" id="InputHousingType" required>
+                                    <option th:each="housingType: ${housingTypes}" th:value="${housingType.getId()}" th:text="${housingType.getName()}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="button-container center">
+                                    <button class="button mr-40" type="submit" name="action" value="filter">Застосувати фільтр</button>
+                                    <button class="button grn" type="submit" name="action" value="without">Без фільтру</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <h1 class="h1" >Оголошення:</h1>
+            <p id="text" class="ta-c frd" th:text="${message}"></p>
 
-        <h1 class="h1 ta-c">Тут будуть всі повідомлення з можливістю фільтарції</h1>
+            <div class="table-container">
+                <div class="container-items" th:each="advertisement: ${advertisements}" th:id="'advertisement_'+${advertisement.id}">
+                    <form action="/user/offers/order" method="post">
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <label >ID оголошення:</label>
+                            </td>
+                            <td>
+                                <input name="advertisementId"  type="text"  th:value="${advertisement.id}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label >Рейтинг орендодавця:</label>
+                            </td>
+                            <td>
+                                <input  type="text"  th:value="${advertisement.landLord.rating}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label >Кількість відгуків у орендодавця:</label>
+                            </td>
+                            <td>
+                                <input  type="text"  th:value="${advertisement.landLord.countOfVoice}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Тип житла:</label>
+                            </td>
+                            <td>
+                                <input type="text" th:value="${advertisement.housingType.name}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label >Країна:</label>
+                            </td>
+                            <td>
+                                <input type="text" th:value="${advertisement.city.country.name}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Місто:</label>
+                            </td>
+                            <td>
+                                <input type="text" th:value="${advertisement.city.name}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Опис оголошення:</label>
+                            </td>
+                            <td>
+                                <textarea  th:text="${advertisement.description}" readonly></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Вартість оренди:</label>
+                            </td>
+                            <td>
+                                <input type="number" name="price"  th:value="${advertisement.price}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Термін оренди:</label>
+                            </td>
+                            <td>
+                                <input  type="number"  th:value="${advertisement.rentalDate}" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Дата створення:</label>
+                            </td>
+                            <td>
+                                <input type="date" name="date"  th:value="${advertisement.date}" readonly>
+                            </td>
+                        </tr>
+
+                        <th:block th:if="${user.role.name}=='орендар'"><tr>
+                            <td colspan="2">
+                                <div class="button-container center">
+                                    <button class="button grn" type="submit">Зробити замовлення</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </th:block>
+                    </table>
+                    </form>
+                </div>
+            </div>
 
 
+        </div>
     </main>
-
     <footer th:insert="sections/footer::footer"></footer>
 </div>
+<script src="/script/admin.js"></script>
 </body>
 </html>

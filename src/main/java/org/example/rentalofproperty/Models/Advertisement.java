@@ -25,10 +25,13 @@ public class Advertisement {
     @Column(length = 1024)
     private String description;  // опис житла
 
-    private LocalDate date;      //дат розміщення оголошення
+    private boolean isModerated;  //чи пройшла модерацію
+    private boolean isDeleted; // чи був видалений
+
+    private LocalDate date;      //дата розміщення оголошення
 
     @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL)
-    private List<Order> orders;
+    private List<OrderModel> orders;
 
     @OneToMany(mappedBy = "advertisement")
     private List<Image> images;
@@ -43,6 +46,18 @@ public class Advertisement {
         this.price=price;
         this.landLord=landLord;
         this.date=LocalDate.now();
+        this.isModerated=false;
+        this.isDeleted=false;
+    }
+
+    public void setSomeFields(HousingType housingType, City city, int price,int rentalDate, String description){
+        this.city=city;
+        this.rentalDate=rentalDate;
+        this.description=description;
+        this.housingType= housingType;
+        this.price=price;
+        this.date=LocalDate.now();
+        this.isModerated=false;
     }
 
 
@@ -99,11 +114,11 @@ public class Advertisement {
         this.housingType = housingType;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderModel> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderModel> orders) {
         this.orders = orders;
     }
 
@@ -129,5 +144,21 @@ public class Advertisement {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public boolean isModerated() {
+        return isModerated;
+    }
+
+    public void setModerated(boolean moderated) {
+        isModerated = moderated;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
